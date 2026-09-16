@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Natis</title>
+  <meta name="description" content="Get in touch with Natis — the New Asset Theory Innovation Studio." />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <site-header></site-header>
+
+  <main>
+    <header class="page-header">
+      <div class="container">
+        <div class="eyebrow">Contact</div>
+        <h1>Let's talk.</h1>
+        <p class="lede">Founder with a thesis, potential partner, or press — the form below reaches us directly.</p>
+      </div>
+    </header>
+
+    <section>
+      <div class="container">
+        <div class="grid grid-2" style="gap:48px; align-items:start;">
+          <div>
+            <!--
+              TODO: Replace YOUR_FORM_ID with your real Formspree endpoint.
+              1. Create a free form at https://formspree.io
+              2. Copy the form ID it gives you (looks like "xayzabcd")
+              3. Paste it into the action URL below
+            -->
+            <form class="form" id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+              <div id="form-status" class="status-banner"></div>
+
+              <div class="form-row">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required autocomplete="name" />
+              </div>
+
+              <div class="form-row">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email" />
+              </div>
+
+              <div class="form-row">
+                <label for="topic">What's this about?</label>
+                <select id="topic" name="topic">
+                  <option>A startup idea / thesis</option>
+                  <option>Partnering with one of your projects</option>
+                  <option>Press / media</option>
+                  <option>Something else</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required placeholder="Tell us a bit about what you're building or why you're reaching out."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Send message</button>
+              <p class="form-note">We read every message and typically reply within a few days.</p>
+            </form>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:20px;">
+              <div class="icon">✉</div>
+              <h3>Email</h3>
+              <p><a href="mailto:hello@natis.studio">hello@natis.studio</a></p>
+            </div>
+            <div class="card" style="margin-bottom:20px;">
+              <div class="icon">◆</div>
+              <h3>Follow along</h3>
+              <p>Longer-form writing on our theses and progress lives on Substack.</p>
+              <a class="btn btn-ghost" style="margin-top:6px;" href="https://natis.substack.com" target="_blank" rel="noopener noreferrer">Read the Substack →</a>
+            </div>
+            <div class="card">
+              <div class="icon">●</div>
+              <h3>Elsewhere</h3>
+              <p style="margin-bottom:14px;">Find us on social for shorter updates and behind-the-scenes.</p>
+              <div class="social-row" id="contact-socials"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/js/components.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("contact-socials").innerHTML = socialLinksHTML();
+    });
+  </script>
+  <script src="/js/main.js"></script>
+</body>
+</html>
