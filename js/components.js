@@ -8,12 +8,16 @@ const SITE_CONFIG = {
   name: "Natis",
   tagline: "New Asset Theory Innovation Studio",
   email: "hello@natis.studio", // TODO: replace with your real studio inbox
+  // Hrefs below are relative to the site root (no leading slash) — this lets
+  // the site work whether it's deployed at a domain root or under a
+  // subpath, like a GitHub Pages project site (e.g. /natis/). SiteHeader and
+  // SiteFooter prefix these with the right "../" depth at render time.
   nav: [
-    { label: "Home", href: "/index.html" },
-    { label: "About", href: "/about.html" },
-    { label: "Mission", href: "/mission.html" },
-    { label: "Projects", href: "/projects/index.html" },
-    { label: "Contact", href: "/contact.html" },
+    { label: "Home", href: "index.html" },
+    { label: "About", href: "about.html" },
+    { label: "Mission", href: "mission.html" },
+    { label: "Projects", href: "projects/index.html" },
+    { label: "Contact", href: "contact.html" },
   ],
   // TODO: swap in your real profile URLs. Leave a value as "" to hide that icon.
   socials: {
@@ -52,31 +56,57 @@ function socialLinksHTML() {
     .join("");
 }
 
-function currentPath() {
-  return window.location.pathname.replace(/\/index\.html$/, "/");
+/**
+ * Figures out (a) which nav item the current page corresponds to, and
+ * (b) how many directory levels deep the current page is, so root-relative
+ * hrefs in SITE_CONFIG can be prefixed correctly. This works regardless of
+ * any deployment subpath (e.g. GitHub Pages serving from /natis/) because it
+ * only looks at the page's position relative to the site's own file tree,
+ * not at the absolute URL.
+ */
+function currentPageInfo() {
+  const segments = window.location.pathname.split("/").filter(Boolean);
+  const last = segments[segments.length - 1] || "";
+
+  if (!last.includes(".")) {
+    // Directory-style URL (trailing slash, or no filename in the path).
+    if (last === "projects") {
+      return { inProjects: true, key: "projects/index.html" };
+    }
+    return { inProjects: false, key: "index.html" };
+  }
+
+  const parent = segments[segments.length - 2] || "";
+  if (parent === "projects") {
+    return { inProjects: true, key: "projects/index.html" };
+  }
+  return { inProjects: false, key: last };
+}
+
+function siteRoot() {
+  return currentPageInfo().inProjects ? "../" : "";
 }
 
 class SiteHeader extends HTMLElement {
   connectedCallback() {
-    const path = currentPath();
+    const root = siteRoot();
+    const currentKey = currentPageInfo().key;
     const links = SITE_CONFIG.nav
       .map((item) => {
-        const itemPath = item.href.replace(/\/index\.html$/, "/");
-        const isCurrent =
-          path === itemPath || (itemPath === "/" && path === "/index.html");
-        return `<li><a href="${item.href}" ${isCurrent ? 'aria-current="page"' : ""}>${item.label}</a></li>`;
+        const isCurrent = item.href === currentKey;
+        return `<li><a href="${root}${item.href}" ${isCurrent ? 'aria-current="page"' : ""}>${item.label}</a></li>`;
       })
       .join("");
 
     this.innerHTML = `
       <nav class="nav">
-        <a class="nav-brand" href="/index.html">
+        <a class="nav-brand" href="${root}index.html">
           <span class="mark">N</span>
           <span>${SITE_CONFIG.name}</span>
         </a>
         <ul class="nav-links" id="nav-links">${links}</ul>
         <div class="nav-actions">
-          <a class="btn btn-primary" href="/contact.html">Get in touch</a>
+          <a class="btn btn-primary" href="${root}contact.html">Get in touch</a>
           <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6">
               <path d="M2 4.5h14M2 9h14M2 13.5h14" stroke-linecap="round"/>
@@ -97,20 +127,21 @@ class SiteHeader extends HTMLElement {
 
 class SiteFooter extends HTMLElement {
   connectedCallback() {
+    const root = siteRoot();
     const year = new Date().getFullYear();
     const linkCols = [
       {
         heading: "Studio",
         links: [
-          { label: "About", href: "/about.html" },
-          { label: "Mission", href: "/mission.html" },
-          { label: "Projects", href: "/projects/index.html" },
+          { label: "About", href: `${root}about.html` },
+          { label: "Mission", href: `${root}mission.html` },
+          { label: "Projects", href: `${root}projects/index.html` },
         ],
       },
       {
         heading: "Connect",
         links: [
-          { label: "Contact", href: "/contact.html" },
+          { label: "Contact", href: `${root}contact.html` },
           { label: "Substack", href: SITE_CONFIG.socials.substack || "#" },
           { label: "Email us", href: `mailto:${SITE_CONFIG.email}` },
         ],
@@ -120,7 +151,7 @@ class SiteFooter extends HTMLElement {
     this.innerHTML = `
       <div class="container footer-inner">
         <div class="footer-brand">
-          <a class="nav-brand" href="/index.html" style="margin-bottom:14px;">
+          <a class="nav-brand" href="${root}index.html" style="margin-bottom:14px;">
             <span class="mark">N</span>
             <span>${SITE_CONFIG.name}</span>
           </a>
