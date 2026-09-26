@@ -101,7 +101,7 @@ class SiteHeader extends HTMLElement {
     this.innerHTML = `
       <nav class="nav">
         <a class="nav-brand" href="${root}index.html">
-          <img class="mark" src="${root}assets/favicon.svg" alt="${SITE_CONFIG.name} logo" width="30" height="30" />
+          <img class="mark" src="${root}assets/favicon.svg?v=2" alt="${SITE_CONFIG.name} logo" width="30" height="30" />
           <span>${SITE_CONFIG.name}</span>
         </a>
         <ul class="nav-links" id="nav-links">${links}</ul>
@@ -152,7 +152,7 @@ class SiteFooter extends HTMLElement {
       <div class="container footer-inner">
         <div class="footer-brand">
           <a class="nav-brand" href="${root}index.html" style="margin-bottom:14px;">
-            <img class="mark" src="${root}assets/favicon.svg" alt="${SITE_CONFIG.name} logo" width="30" height="30" />
+            <img class="mark" src="${root}assets/favicon.svg?v=2" alt="${SITE_CONFIG.name} logo" width="30" height="30" />
             <span>${SITE_CONFIG.name}</span>
           </a>
           <p>${SITE_CONFIG.tagline}. We design, build, and back startups exploring new theories of value, ownership, and asset creation.</p>
