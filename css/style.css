@@ -190,14 +190,8 @@ site-header {
   width: 30px;
   height: 30px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--text);
-  font-size: 14px;
+  flex: none;
+  display: block;
 }
 
 .nav-links {
